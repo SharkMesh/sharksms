@@ -79,25 +79,24 @@
     <!-- 图表与操作区 -->
     <div class="layui-row layui-col-space20 dashboard-row">
       <!-- 左侧：系统公告 -->
-      <div class="layui-col-md8">
+      <div class="layui-col-xs12 layui-col-md6">
         <div class="chart-card">
           <div class="chart-header">
             <div class="chart-title">系统公告</div>
-            <div class="chart-more" onclick="parent.layui.index.openTabsPage('system/announcement.html', '系统公告')"><i class="layui-icon layui-icon-more"></i></div>
+            <div class="chart-more">
+              <a href="javascript:;" id="view-all-announcements" style="color: #64748b; font-size: 12px; font-weight: 400;">查看全部 ></a>
+            </div>
           </div>
           <div class="chart-body">
             <ul class="notice-list" id="announcement-list">
               <li style="justify-content: center; background: transparent; cursor: default;">正在加载最新公告...</li>
             </ul>
           </div>
-          <div style="margin-top: 20px; text-align: right;">
-            <a href="javascript:;" id="view-all-announcements" style="color: #64748b; font-size: 13px;">查看全部公告 ></a>
-          </div>
         </div>
       </div>
 
       <!-- 右侧：每日签到 -->
-      <div class="layui-col-md4">
+      <div class="layui-col-xs12 layui-col-md6">
         <div class="chart-card">
           <div class="chart-header">
             <div class="chart-title">每日签到</div>
