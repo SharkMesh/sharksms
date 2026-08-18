@@ -28,12 +28,11 @@
      uname -m
      ```
    - **选择对应的安装包：**
-     - 如果输出为 `x86_64`，请选择 `sharksms-linux-x64.zip` 解压
-     - 如果输出为 `aarch64` 或 `arm64`，请选择 `sharksms-linux-arm64.zip` 解压
-     - 另一个无用的文件可以直接删除
+     - 如果输出为 `x86_64`，请选择 `sharksms-linux-x64` 目录
+     - 如果输出为 `aarch64` 或 `arm64`，请选择 `sharksms-linux-arm64` 目录
 
 5. **修改配置文件并部署后端**  
-   - 切换到对应安装包解压后的目录，例如 `/www/wwwroot/sharksms-linux-x64`，并点击「终端」
+   - 切换到对应的目录，例如 `/www/wwwroot/sharksms-linux-x64`，并点击「终端」
    - 在终端中执行以下命令生成配置文件 `.env` ：
      ```bash
      cp .env.example .env
@@ -98,6 +97,14 @@
 | `--db-name` | 数据库名 | `sms_db` |
 | `--mem-limit` | 内存硬限制 (G) | `1G` |
 | `--cpu-limit` | CPU 使用率限制 | `50%` |
-| `--agent-id` | Agent 唯一标识 | `node-01` |
+| `--agent-id` | Agent 唯一标识 | `node01` |
 | `--skip-redis` | 不自动安装 Redis | - |
 | `--update` | 仅更新二进制文件 | - |
+
+## 项目更新说明
+
+**更新项目**
+- 直接执行 `git pull` 即可更新项目，更新后需要修改相对目录`frontend/res/config.js`文件中的后端接口基础URL，如果后端 `.env.example` 修改了，则需同步修改.env文件
+
+**更新疑难解答**
+- 如您修改了代码，请先备份，然后执行 `git reset --hard` 即可丢弃本地修改，解决冲突进行更新

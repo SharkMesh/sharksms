@@ -1,0 +1,38 @@
+{
+  "name": "sharksms",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node loader.js",
+    "pm2": "pm2 start ecosystem.config.cjs",
+    "initDB": "node init_loader.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.19.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dayjs": "^1.11.21",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.6.2",
+    "grammy": "^1.45.1",
+    "ioredis": "^6.0.0",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.11.0",
+    "mysql2": "^3.23.3",
+    "rate-limit-redis": "^6.0.1",
+    "svg-captcha": "^1.4.0",
+    "winston": "^3.19.0",
+    "winston-daily-rotate-file": "^5.0.0"
+  },
+  "devDependencies": {
+    "bytenode": "^1.6.0",
+    "esbuild": "^0.28.2",
+    "fs-extra": "^11.4.0",
+    "nodemon": "^3.1.14"
+  }
+}
