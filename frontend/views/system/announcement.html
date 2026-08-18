@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>公告管理</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../../res/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../../res/adminui/dist/css/admin.css" media="all">
+  <link rel="stylesheet" href="../../../res/layui/css/shark.css" media="all">
+  <style>
+    .announcement-content {
+      max-width: 500px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="layui-fluid" style="padding: 20px;">
+    <div class="layui-card panel-card">
+      <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+        <script type="text/html" template>
+          {{# if(layui.data(layui.setter.tableName).user.role === 'Admin'){ }}
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <button class="layui-btn layui-btn-normal layuiadmin-btn-announcement" data-type="add">
+                <i class="layui-icon layui-icon-add-1 layuiadmin-button-btn"></i> 发布公告
+              </button>
+            </div>
+          </div>
+          {{# } }}
+        </script>
+      </div>
+      
+      <div class="layui-card-body">
+        <table id="LAY-announcement-manage" lay-filter="LAY-announcement-manage"></table>
+        
+        <script type="text/html" id="table-announcement-admin">
+          {{# if(layui.data(layui.setter.tableName).user.role === 'Admin'){ }}
+          <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+          <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+          {{# } else { }}
+          <span class="layui-badge-rim">无权限</span>
+          {{# } }}
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../res/layui/layui.js"></script>  
+  <script>
+  layui.config({
+    base: '../../../res/' // 静态资源所在路径
+  }).use(['index', 'announcementadmin', 'table'], function(){
+    var $ = layui.$
+    ,form = layui.form
+    ,table = layui.table
+    ,admin = layui.admin;
+    
+    // 事件处理
+    var active = {
+      add: function(){
+        layer.open({
+          type: 2
+          ,title: '发布新公告'
+          ,content: 'announcementform.html'
+          ,maxmin: true
+          ,area: ['600px', '400px']
+          ,btn: ['发布', '取消']
+          ,yes: function(index, layero){
+            var iframeWindow = window['layui-layer-iframe'+ index]
+            ,submitID = 'LAY-announcement-submit'
+            ,submit = layero.find('iframe').contents().find('#'+ submitID);
+
+            // 监听提交
+            iframeWindow.layui.form.on('submit('+ submitID +')', function(data){
+              var field = data.field;
+              
+              admin.req({
+                url: layui.setter.paths.baseApi + '/api/announcements'
+                ,method: 'POST'
+                ,data: field
+                ,done: function(res){
+                  table.reload('LAY-announcement-manage');
+                  layer.close(index);
+                  layer.msg('发布成功', {icon: 1});
+                }
+              });
+            });  
+            
+            submit.trigger('click');
+          }
+        }); 
+      }
+    };
+    
+    $('.layui-btn.layuiadmin-btn-announcement').on('click', function(){
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+  });
+  </script>
+</body>
+</html>

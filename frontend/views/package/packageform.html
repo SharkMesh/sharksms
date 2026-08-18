@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>套餐表单</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../../res/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../../res/layui/css/shark.css" media="all">
+  <style>
+    .layui-form-label {
+      font-size: 13px;
+    }
+    .layui-input, .layui-select, .layui-textarea {
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="layui-form layui-anim layui-anim-upbit" lay-filter="layuiadmin-form-packageadmin" id="layuiadmin-form-packageadmin" style="padding: 20px 0 0 0;">
+    <div class="layui-form-item">
+      <label class="layui-form-label">套餐名称</label>
+      <div class="layui-input-inline">
+        <input type="text" name="name" lay-verify="required" placeholder="请输入套餐名称" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">套餐分类</label>
+      <div class="layui-input-inline">
+        <select name="category" lay-verify="required" lay-filter="categorySelect">
+          <option value="combo" selected>综合包 (线程+积分)</option>
+          <option value="points">积分包 (仅积分)</option>
+          <option value="tasks">线程包 (仅线程)</option>
+          <option value="level">等级包 (等级+线程)</option>
+        </select>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">并发数</label>
+      <div class="layui-input-inline">
+        <input type="number" name="concurrent_tasks" lay-verify="required" placeholder="请输入并发任务数" autocomplete="off" class="layui-input" value="1">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">包含积分</label>
+      <div class="layui-input-inline">
+        <input type="number" name="points" lay-verify="required" placeholder="请输入积分数量" autocomplete="off" class="layui-input" value="0">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">用户等级</label>
+      <div class="layui-input-inline">
+        <select name="target_role">
+          <option value="">保持原样</option>
+          <option value="Agent">升级为代理商</option>
+        </select>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">代理价格</label>
+      <div class="layui-input-inline">
+        <input type="number" name="agent_price" lay-verify="required" placeholder="请输入代理价格" autocomplete="off" class="layui-input" value="0">
+      </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+      <input type="button" lay-submit lay-filter="LAY-package-front-submit" id="LAY-package-front-submit" value="确认">
+    </div>
+  </div>
+
+  <script src="../../../res/layui/layui.js"></script>  
+  <script>
+  layui.config({
+    base: '../../../res/' // 静态资源所在路径
+  }).use(['index', 'form'], function(){
+    var $ = layui.$
+    ,form = layui.form;
+
+    // 监听分类选择，动态禁用字段
+    form.on('select(categorySelect)', function(data){
+      var category = data.value;
+      var $tasks = $('input[name="concurrent_tasks"]');
+      var $points = $('input[name="points"]');
+      var $role = $('select[name="target_role"]');
+
+      // 重置状态
+      $tasks.prop('disabled', false).removeClass('layui-disabled');
+      $points.prop('disabled', false).removeClass('layui-disabled');
+      $role.prop('disabled', false).removeClass('layui-disabled');
+
+      if (category === 'points') {
+        $tasks.prop('disabled', true).addClass('layui-disabled').val(1);
+        $role.prop('disabled', true).addClass('layui-disabled').val('');
+      } else if (category === 'tasks') {
+        $points.prop('disabled', true).addClass('layui-disabled').val(0);
+        $role.prop('disabled', true).addClass('layui-disabled').val('');
+      } else if (category === 'level') {
+        $points.prop('disabled', true).addClass('layui-disabled').val(0);
+        $tasks.prop('disabled', false).removeClass('layui-disabled');
+      } else if (category === 'combo') {
+        $role.prop('disabled', true).addClass('layui-disabled').val('');
+      }
+      form.render();
+    });
+  });
+  </script>
+</body>
+</html>

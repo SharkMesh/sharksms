@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>个人中心</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../res/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../res/adminui/dist/css/admin.css" media="all">
+  <link rel="stylesheet" href="../../res/layui/css/shark.css" media="all">
+  <link rel="stylesheet" href="../../res/layui/css/user.css" media="all">
+</head>
+<body>
+
+  <div class="layui-fluid" style="padding: 20px;">
+    <div class="layui-row layui-col-space20">
+      
+      <!-- 左侧：账户概览 -->
+      <div class="layui-col-md4">
+        <div class="layui-card panel-card">
+          <div class="user-info-header">
+            <div class="user-avatar-circle" id="info-avatar-initial">U</div>
+            <div class="user-header-text">
+              <div class="user-header-name" id="info-username-top">-</div>
+              <div class="user-header-role" id="info-role-badge">-</div>
+            </div>
+          </div>
+          <div class="layui-card-body">
+            <div class="profile-group">
+              <div class="profile-item-row">
+                <span class="profile-item-label"><i class="layui-icon layui-icon-username"></i>用户名</span>
+                <span class="profile-item-content" id="info-username">-</span>
+              </div>
+              <div class="profile-item-row">
+                <span class="profile-item-label"><i class="layui-icon layui-icon-diamond"></i>当前积分</span>
+                <span class="profile-item-content" style="color: #f59e0b; font-size: 18px;" id="info-points">0</span>
+              </div>
+              <div class="profile-item-row">
+                <span class="profile-item-label"><i class="layui-icon layui-icon-rmb"></i>账户余额</span>
+                <span class="profile-item-content" style="color: #10b981; font-size: 18px;" id="info-money">0.00</span>
+              </div>
+              <div class="profile-item-row">
+                <span class="profile-item-label"><i class="layui-icon layui-icon-date"></i>注册时间</span>
+                <span class="profile-item-content" id="info-created_at">-</span>
+              </div>
+              <div class="profile-item-row">
+                <span class="profile-item-label"><i class="layui-icon layui-icon-link"></i>Telegram</span>
+                <span class="profile-item-content" id="info-tg_status">
+                  <span class="layui-badge layui-bg-gray">未绑定</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧：设置区域 -->
+      <div class="layui-col-md8">
+        
+        <!-- 账户设置（合并修改资料和安全设置） -->
+        <div class="layui-card panel-card">
+          <div class="layui-card-header">账户设置</div>
+          <div class="layui-card-body padded">
+            <div class="layui-tab layui-tab-brief" lay-filter="user-setup-tab">
+              <ul class="layui-tab-title">
+                <li class="layui-this">资料修改</li>
+                <li>安全设置</li>
+              </ul>
+              <div class="layui-tab-content" style="padding: 20px 0 0 0;">
+                <!-- 修改资料 -->
+                <div class="layui-tab-item layui-show">
+                  <div class="layui-form security-form-container" lay-filter="form-update-nickname">
+                    <div class="layui-form-item">
+                      <label class="layui-form-label">我的昵称</label>
+                      <div class="layui-input-block">
+                        <input type="text" name="nickname" lay-verify="required" autocomplete="off" placeholder="请输入昵称" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-form-item" style="margin-top: 20px;">
+                      <div class="layui-input-block">
+                        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="submit-nickname">
+                          <i class="layui-icon layui-icon-ok"></i> 保存修改
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- 修改密码 -->
+                <div class="layui-tab-item">
+                  <div class="layui-form security-form-container" lay-filter="form-change-password">
+                    <div class="layui-form-item">
+                      <label class="layui-form-label">当前密码</label>
+                      <div class="layui-input-block security-input-item">
+                        <i class="layui-icon layui-icon-password"></i>
+                        <input type="password" name="oldPassword" lay-verify="required" placeholder="请输入当前密码" class="layui-input">
+                      </div>
+                    </div>
+                    
+                    <div class="layui-form-item">
+                      <label class="layui-form-label">新密码</label>
+                      <div class="layui-input-block security-input-item">
+                        <i class="layui-icon layui-icon-key"></i>
+                        <input type="password" name="password" lay-verify="required" placeholder="6-16位字符" class="layui-input">
+                      </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                      <label class="layui-form-label">确认密码</label>
+                      <div class="layui-input-block security-input-item">
+                        <i class="layui-icon layui-icon-vercode"></i>
+                        <input type="password" name="repassword" lay-verify="required" placeholder="再次输入新密码" class="layui-input">
+                      </div>
+                    </div>
+
+                    <div class="layui-form-item" style="margin-top: 30px;">
+                      <div class="layui-input-block">
+                        <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="submit-password">确认修改密码</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 开发者设置 -->
+        <div class="layui-card panel-card">
+          <div class="layui-card-header">开发者配置</div>
+          <div class="layui-card-body padded">
+            <div class="layui-row layui-col-space30">
+              <!-- 左侧：接口密钥 -->
+              <div class="layui-col-md6" style="border-right: 1px solid #f1f5f9;">
+                <div id="api-key-section" style="display: none;">
+                  <div class="profile-item">
+                    <div class="profile-label">API SECRET</div>
+                    <div class="api-key-box">
+                      <div class="api-key-text" id="info-api_secret">••••••••••••••••••••••••</div>
+                      <div class="api-key-actions">
+                        <i class="layui-icon layui-icon-eye api-key-btn" id="btn-show-secret" title="显示/隐藏"></i>
+                        <i class="layui-icon layui-icon-file-b api-key-btn" id="btn-copy-secret" title="复制"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="profile-item" style="margin-top: 15px;">
+                    <div class="profile-label">API KEY</div>
+                    <div class="api-key-box">
+                      <div class="api-key-text" id="info-api_key">••••••••••••••••••••••••</div>
+                      <div class="api-key-actions">
+                        <i class="layui-icon layui-icon-eye api-key-btn" id="btn-show-key" title="显示/隐藏"></i>
+                        <i class="layui-icon layui-icon-file-b api-key-btn" id="btn-copy-key" title="复制"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="margin-top: 15px;">
+                    <button class="layui-btn layui-btn-primary layui-btn-xs" id="btn-reset-ak">
+                      <i class="layui-icon layui-icon-refresh"></i> 重置接口密钥
+                    </button>
+                  </div>
+                </div>
+                
+                <div id="no-api-key-msg" style="display: none; padding: 10px 0;">
+                  <div style="color: #94a3b8; font-size: 13px; margin-bottom: 10px;">尚未申请接口密钥</div>
+                  <button class="layui-btn layui-btn-sm layui-btn-normal" id="btn-apply-ak">
+                    <i class="layui-icon layui-icon-add-1"></i> 申请 API KEY
+                  </button>
+                </div>
+              </div>
+
+              <!-- 右侧：IP 白名单 -->
+              <div class="layui-col-md6">
+                <div class="layui-form" lay-filter="form-update-whitelist">
+                  <div class="layui-form-item" style="margin-bottom: 15px;">
+                    <div class="profile-label">IP 白名单 (多个以英文逗号分隔)</div>
+                    <div class="layui-input-block" style="margin-left: 0; margin-top: 8px;">
+                      <textarea name="whitelist_ip" placeholder="例如: 127.0.0.1, 192.168.1.1" class="layui-textarea" style="font-family: monospace; min-height: 100px;"></textarea>
+                    </div>
+                  </div>
+                  <div class="layui-form-item" style="margin-bottom: 0;">
+                    <button class="layui-btn layui-btn-sm layui-btn-normal" lay-submit lay-filter="submit-whitelist">保存白名单</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../../res/layui/layui.js"></script>  
+  <script>
+  layui.config({
+    base: '../../res/' 
+  }).use(['index', 'userinfo']);
+  </script>
+</body>
+</html>

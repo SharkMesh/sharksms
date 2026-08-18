@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>控制台</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="../../res/layui/css/layui.css" rel="stylesheet">
+  <link href="../../res/adminui/dist/css/admin.css" rel="stylesheet">
+  <link href="../../res/layui/css/shark.css" rel="stylesheet">
+</head>
+<body>
+  <div class="layui-fluid">
+    <!-- 顶部统计卡片 -->
+    <div class="layui-row layui-col-space20">
+      <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
+        <div class="stat-card">
+          <div class="stat-card-info">
+            <div class="stat-card-title">积分</div>
+            <div class="stat-card-value" id="user-points">0</div>
+            <div class="stat-card-trend up">
+              <i class="layui-icon layui-icon-triangle-d" style="transform: rotate(180deg); display: inline-block;"></i>
+              账户积分余额
+            </div>
+          </div>
+          <div class="stat-card-icon icon-blue">
+            <i class="layui-icon layui-icon-rmb"></i>
+          </div>
+        </div>
+      </div>
+      <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
+        <div class="stat-card">
+          <div class="stat-card-info">
+            <div class="stat-card-title">余额</div>
+            <div class="stat-card-value" id="user-money">0.00</div>
+            <div class="stat-card-trend up">
+              <i class="layui-icon layui-icon-triangle-d" style="transform: rotate(180deg); display: inline-block;"></i>
+              账户可用余额
+            </div>
+          </div>
+          <div class="stat-card-icon icon-orange">
+            <i class="layui-icon layui-icon-dollar"></i>
+          </div>
+        </div>
+      </div>
+      <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
+        <div class="stat-card">
+          <div class="stat-card-info">
+            <div class="stat-card-title">任务</div>
+            <div class="stat-card-value" id="active-tasks">0</div>
+              <div class="stat-card-trend up">
+                <i class="layui-icon layui-icon-triangle-d" style="transform: rotate(180deg); display: inline-block;"></i>
+              正在运行任务
+              </div>
+          </div>
+          <div class="stat-card-icon icon-green">
+            <i class="layui-icon layui-icon-fire"></i>
+          </div>
+        </div>
+      </div>
+      <div class="layui-col-xs12 layui-col-sm6 layui-col-md3">
+        <div class="stat-card">
+          <div class="stat-card-info">
+            <div class="stat-card-title">等级</div>
+            <div class="stat-card-value" id="user-role">-</div>
+              <div class="stat-card-trend up">
+                <i class="layui-icon layui-icon-triangle-d" style="transform: rotate(180deg); display: inline-block;"></i>
+              您的账户等级
+              </div>
+          </div>
+          <div class="stat-card-icon icon-purple">
+            <i class="layui-icon layui-icon-username"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 图表与操作区 -->
+    <div class="layui-row layui-col-space20 dashboard-row">
+      <!-- 左侧：系统公告 -->
+      <div class="layui-col-md8">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div class="chart-title">系统公告</div>
+            <div class="chart-more" onclick="parent.layui.index.openTabsPage('system/announcement.html', '系统公告')"><i class="layui-icon layui-icon-more"></i></div>
+          </div>
+          <div class="chart-body">
+            <ul class="notice-list" id="announcement-list">
+              <li style="justify-content: center; background: transparent; cursor: default;">正在加载最新公告...</li>
+            </ul>
+          </div>
+          <div style="margin-top: 20px; text-align: right;">
+            <a href="javascript:;" id="view-all-announcements" style="color: #64748b; font-size: 13px;">查看全部公告 ></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧：每日签到 -->
+      <div class="layui-col-md4">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div class="chart-title">每日签到</div>
+            <div class="chart-more"><i class="layui-icon layui-icon-help"></i></div>
+          </div>
+          <div class="checkin-card-content">
+            <div class="checkin-visual">
+              <div class="checkin-gift-bg"></div>
+              <i class="layui-icon layui-icon-gift checkin-gift-icon"></i>
+            </div>
+            
+            <div style="margin-bottom: 25px;">
+              <div class="checkin-status-text" id="checkin-status-label">签到领积分</div>
+              <div class="checkin-sub-text">签到即可随机获得 <span>1-10</span> 积分奖励</div>
+            </div>
+            
+            <button class="checkin-action-btn" id="btn-checkin">
+              <i class="layui-icon layui-icon-ver"></i>
+              <span>立即签到</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../res/layui/layui.js"></script>
+  
+  <script>
+  layui.config({
+    base: '../../res/'
+  }).use(['index', 'admin', 'laytpl', 'util'], function(){
+    var $ = layui.$, admin = layui.admin, laytpl = layui.laytpl, util = layui.util;
+    
+    // 获取用户信息
+    var user = layui.data(layui.setter.tableName).user || {};
+    $('#user-points').text(parseInt(user.points) || '0');
+    $('#user-money').text(user.money || '0.00');
+    var roleText = user.role === 'Admin' ? '管理员' : (user.role === 'Agent' ? '代理商' : '普通用户');
+    $('#user-role').text(roleText);
+    $('#role-name').text(user.role === 'Admin' ? '超级管理员' : roleText);
+    
+    // 签到按钮点击事件
+    $('#btn-checkin').on('click', function() {
+      var $btn = $(this);
+      if($btn.hasClass('is-disabled')) return;
+      
+      admin.req({
+        url: layui.setter.paths.baseApi + '/api/users/check-in',
+        method: 'POST',
+        done: function(res){
+          layer.msg(res.msg || '签到成功', {icon: 1});
+          
+          // 更新按钮状态
+          $btn.addClass('is-disabled').find('span').text('今日已完成签到');
+          $btn.find('i').removeClass('layui-icon-ver').addClass('layui-icon-ok');
+          
+          // 改变图标颜色或样式以示完成
+          $('.checkin-gift-icon').css('color', '#10b981');
+          $('.checkin-gift-bg').css('background', 'radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0) 70%)');
+          
+          $('#checkin-status-label').text('签到完成');
+
+          // 重新获取统计数据以更新积分显示
+          getStats();
+        }
+      });
+    });
+
+    // 获取统计数据
+    var getStats = function(){
+      admin.req({
+        url: layui.setter.paths.baseApi + '/api/users/stats',
+        done: function(res){
+          var data = res.data || {};
+          $('#user-points').text(parseInt(data.points) || '0');
+          $('#user-money').text(data.money || '0.00');
+          $('#active-tasks').text(data.activeTasks || 0);
+          
+          // 更新本地存储
+          var local = layui.data(layui.setter.tableName);
+          if(local.user){
+            local.user.points = data.points;
+            local.user.money = data.money;
+            layui.data(layui.setter.tableName, { key: 'user', value: local.user });
+          }
+        }
+      });
+    };
+
+    // 获取并渲染公告
+    var getAnnouncements = function(){
+      admin.req({
+        url: layui.setter.paths.baseApi + '/api/announcements',
+        done: function(res){
+          var data = Array.isArray(res.data) ? res.data : (res.data.rows || []);
+          var $list = $('#announcement-list');
+          $list.empty();
+          
+          if(data.length > 0) {
+            layui.each(data.slice(0, 5), function(index, item){
+              var $li = $('<li>' + 
+                '<span class="layui-badge-dot layui-bg-blue"></span>' + 
+                '<span class="content">' + item.content + '</span>' + 
+                '<span class="date">' + util.toDateString(item.created_at, 'MM-dd') + '</span>' + 
+              '</li>');
+              
+              $li.on('click', function(){
+                layer.open({
+                  type: 1,
+                  title: '公告详情',
+                  area: ['500px', 'auto'],
+                  shadeClose: true,
+                  content: '<div style="padding: 24px; line-height: 1.6; color: #334155;">' + 
+                    '<div style="font-size: 12px; color: #94a3b8; margin-bottom: 12px;">发布时间：' + util.toDateString(item.created_at, 'yyyy-MM-dd HH:mm') + '</div>' +
+                    '<div style="font-size: 14px;">' + item.content + '</div>' + 
+                  '</div>'
+                });
+              });
+              
+              $list.append($li);
+            });
+            
+            // 绑定查看全部点击事件
+            $('#view-all-announcements').off('click').on('click', function(){
+              layer.open({
+                type: 1,
+                title: '系统公告',
+                area: ['600px', '450px'],
+                shadeClose: true,
+                content: '<div style="padding: 20px;"><ul class="layui-timeline">' + 
+                  data.map(function(item){
+                    return '<li class="layui-timeline-item">' +
+                      '<i class="layui-icon layui-timeline-axis"></i>' +
+                      '<div class="layui-timeline-content layui-text">' +
+                        '<h3 class="layui-timeline-title">' + util.toDateString(item.created_at, 'yyyy-MM-dd HH:mm') + '</h3>' +
+                        '<p>' + item.content + '</p>' +
+                      '</div>' +
+                    '</li>';
+                  }).join('') + 
+                  '</ul></div>'
+              });
+            });
+          } else {
+            $list.append('<li style="justify-content: center; background: transparent; cursor: default; color: #94a3b8;">暂无公告</li>');
+            $('#view-all-announcements').hide();
+          }
+        }
+      });
+    };
+
+    // 获取签到状态
+    var getCheckInStatus = function(){
+      admin.req({
+        url: layui.setter.paths.baseApi + '/api/users/check-in-status',
+        done: function(res){
+          if(res.data && res.data.isCheckedIn){
+            var $btn = $('#btn-checkin');
+            $btn.addClass('is-disabled').find('span').text('今日已完成签到');
+            $btn.find('i').removeClass('layui-icon-ver').addClass('layui-icon-ok');
+            
+            $('.checkin-gift-icon').css('color', '#10b981');
+            $('.checkin-gift-bg').css('background', 'radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0) 70%)');
+            
+            $('#checkin-status-label').text('签到完成');
+          }
+        }
+      });
+    };
+
+    // 初始加载
+    getStats();
+    getAnnouncements();
+    getCheckInStatus();
+    
+    // 页面关闭时清除定时器
+    $(window).on('beforeunload', function(){
+      // if(timer) clearInterval(timer);
+    });
+  });
+  </script>
+</body>
+</html>

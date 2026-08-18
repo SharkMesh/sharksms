@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>套餐管理</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../../res/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../../res/adminui/dist/css/admin.css" media="all">
+  <link rel="stylesheet" href="../../../res/layui/css/shark.css" media="all">
+</head>
+<body>
+
+  <div class="layui-fluid layui-anim layui-anim-upbit" style="padding: 20px;">
+    <div class="layui-card panel-card">
+      <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+        <div class="layui-form-item">
+          <div class="layui-inline">
+            <label class="layui-form-label">套餐名称</label>
+            <div class="layui-input-block">
+              <input type="text" name="name" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <button class="layui-btn layuiadmin-btn-packageadmin" lay-submit lay-filter="LAY-package-front-search">
+              <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i> 搜索
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="layui-card-body">
+        <div style="padding-bottom: 20px;">
+          <button class="layui-btn layui-btn-normal layuiadmin-btn-packageadmin" data-type="add">
+            <i class="layui-icon layui-icon-add-1"></i> 添加套餐
+          </button>
+        </div>
+        
+        <div id="LAY-package-list-container" class="package-card-container">
+          <!-- 卡片将渲染到这里 -->
+        </div>
+
+        <!-- 卡片模板 -->
+        <script type="text/html" id="packageCardTpl">
+          {{# if(d.length === 0){ }}
+            <div class="package-empty">
+              <i class="layui-icon layui-icon-face-surprised"></i>
+              <p>暂无套餐数据</p>
+            </div>
+          {{# } else { }}
+            {{# layui.each(d, function(index, item){ }}
+              <div class="package-card-item layui-anim layui-anim-fadein">
+                <div class="package-card">
+                  <div class="pkg-title">
+                    <i class="layui-icon layui-icon-component"></i>
+                    <span>{{ item.name }}</span>
+                  </div>
+                  <div class="pkg-info">
+                    <div class="info-item">
+                      <span class="label">类型</span>
+                      <span class="value">
+                        {{# if(item.category === 'combo'){ }} 综合包
+                        {{# } else if(item.category === 'points'){ }} 积分包
+                        {{# } else if(item.category === 'tasks'){ }} 线程包
+                        {{# } else if(item.category === 'level'){ }} 等级包
+                        {{# } else { }} {{ item.category }} {{# } }}
+                      </span>
+                    </div>
+                    {{# if(item.category === 'combo' || item.category === 'tasks' || item.category === 'level'){ }}
+                    <div class="info-item">
+                      <span class="label">并发数</span>
+                      <span class="value">{{ item.concurrent_tasks }} 线程</span>
+                    </div>
+                    {{# } }}
+                    {{# if(item.category === 'combo' || item.category === 'points'){ }}
+                    <div class="info-item">
+                      <span class="label">包含积分</span>
+                      <span class="value">{{ item.points }} 积分</span>
+                    </div>
+                    {{# } }}
+                    {{# if(item.category === 'level' && item.target_role){ }}
+                    <div class="info-item">
+                      <span class="label">目标等级</span>
+                      <span class="value" style="color: #FF5722;">{{ item.target_role === 'Agent' ? '代理商' : item.target_role }}</span>
+                    </div>
+                    {{# } }}
+                    <div class="info-item">
+                      <span class="label">创建时间</span>
+                      <span class="value">{{ layui.util.toDateString(item.created_at, 'yyyy-MM-dd') }}</span>
+                    </div>
+                  </div>
+                  <div class="pkg-price">
+                    <span style="color: #999; font-size: 12px;">代理价</span>
+                    <div>
+                      <span class="price-value">{{ item.agent_price }}</span>
+                      <span class="price-unit">积分</span>
+                    </div>
+                  </div>
+                  <div class="pkg-actions">
+                    <button class="layui-btn layui-btn-normal layui-btn-sm" lay-event="edit" data-id="{{ item.id }}">编辑</button>
+                    <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del" data-id="{{ item.id }}">删除</button>
+                  </div>
+                </div>
+              </div>
+            {{# }); }}
+          {{# } }}
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../res/layui/layui.js"></script>  
+  <script>
+  layui.config({
+    base: '../../../res/' // 静态资源所在路径
+  }).use(['index', 'packageadmin'], function(){
+    var $ = layui.$
+    ,form = layui.form
+    ,packageadmin = layui.packageadmin;
+    
+    // 初始化加载
+    packageadmin.render();
+
+    // 事件-搜索
+    form.on('submit(LAY-package-front-search)', function(data){
+      packageadmin.render(data.field);
+    });
+  
+    // 事件
+    var active = {
+      add: function(){
+        packageadmin.add();
+      }
+    };
+    
+    $('.layui-btn.layuiadmin-btn-packageadmin').on('click', function(){
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+
+    // 绑定卡片内部事件
+    $(document).on('click', '[lay-event]', function(){
+      var event = $(this).attr('lay-event');
+      var id = $(this).data('id');
+      if(event === 'edit'){
+        packageadmin.edit(id);
+      } else if(event === 'del'){
+        packageadmin.del(id);
+      }
+    });
+  });
+  </script>
+</body>
+</html>

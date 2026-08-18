@@ -1,0 +1,1 @@
+layui.define(function(i){layui.$,layui.layer,layui.laytpl,layui.setter,layui.view;var l=layui.admin;l.events.logout=function(){l.exit(function(){location.href="user/login.html"})},i("common",{})});

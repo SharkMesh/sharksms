@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>卡密中心</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="../../res/layui/css/layui.css" rel="stylesheet">
+  <link href="../../res/adminui/dist/css/admin.css" rel="stylesheet">
+  <link href="../../res/layui/css/shark.css" rel="stylesheet">
+</head>
+<body>
+  <div class="layui-fluid" style="padding: 20px;">
+    <div class="layui-row layui-col-space20">
+      <!-- 兑换卡密 - 所有用户可见 -->
+      <div class="layui-col-md12">
+        <div class="layui-card panel-card">
+          <div class="layui-card-header">卡密兑换</div>
+          <div class="layui-card-body">
+            <form class="layui-form" action="" lay-filter="voucher-redeem-form">
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-md8">
+                  <input type="text" name="code" lay-verify="required" placeholder="请输入卡密串" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-col-md4">
+                  <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="voucher-redeem-submit">立即兑换</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- 生成卡密 - 管理员和代理可见 -->
+      <script type="text/html" template>
+        {{# 
+          var user = layui.data(layui.setter.tableName).user || {};
+          if(user.role === 'Admin' || user.role === 'Agent'){ 
+        }}
+        <div class="layui-col-md12">
+          <div class="layui-card panel-card">
+            <div class="layui-card-header">生成卡密</div>
+            <div class="layui-card-body">
+              <form class="layui-form" action="" lay-filter="voucher-create-form">
+                <div class="layui-row layui-col-space10">
+                  <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                      <label class="layui-form-label">选择套餐</label>
+                      <div class="layui-input-block">
+                        <select name="package_id" lay-verify="required" lay-search>
+                          <option value="">请选择套餐</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="layui-col-md4">
+                    <div class="layui-form-item">
+                      <label class="layui-form-label">数量</label>
+                      <div class="layui-input-block">
+                        <input type="number" name="count" lay-verify="required" value="1" placeholder="生成数量" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="layui-col-md4">
+                    <button class="layui-btn layui-btn-normal layui-btn-fluid" lay-submit lay-filter="voucher-create-submit">批量生成</button>
+                  </div>
+                </div>
+              </form>
+              <div id="voucher-result" style="margin-top: 20px; display: none;">
+                <blockquote class="layui-elem-quote">生成的卡密列表：</blockquote>
+                <pre class="layui-code" id="voucher-codes"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{# } }}
+      </script>
+
+      <!-- 卡密列表 - 代理和管理员可见 -->
+      <script type="text/html" template>
+        {{# 
+          var user = layui.data(layui.setter.tableName).user || {};
+          if(user.role === 'Admin' || user.role === 'Agent'){ 
+        }}
+        <div class="layui-col-md12">
+          <div class="layui-card panel-card">
+            <div class="layui-card-header">卡密记录</div>
+            <div class="layui-card-body">
+              <table id="LAY-voucher-list" lay-filter="LAY-voucher-list"></table>
+            </div>
+          </div>
+        </div>
+        {{# } }}
+      </script>
+    </div>
+  </div>
+
+  <script src="../../res/layui/layui.js"></script>
+  <script>
+  layui.config({
+    base: '../../res/'
+  }).extend({
+    voucheradmin: 'modules/voucheradmin'
+  }).use(['index', 'voucheradmin']);
+  </script>
+</body>
+</html>

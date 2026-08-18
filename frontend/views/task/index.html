@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>任务中心</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="../../res/layui/css/layui.css" rel="stylesheet">
+  <link href="../../res/adminui/dist/css/admin.css" rel="stylesheet">
+  <link href="../../res/layui/css/shark.css" rel="stylesheet">
+</head>
+<body>
+  <div class="layui-fluid" style="padding: 20px;">
+    <div class="layui-row layui-col-space20">
+      <!-- 上部：立即下单 -->
+      <div class="layui-col-md12">
+        <div class="layui-card panel-card">
+          <div class="layui-card-header">提交任务</div>
+          <div class="layui-card-body">
+            <form class="layui-form" action="" lay-filter="task-create-form">
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-md4">
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">手机号</label>
+                    <div class="layui-input-block">
+                      <input type="text" name="phone" lay-verify="required|phone" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                </div>
+                <div class="layui-col-md4">
+                  <div class="layui-form-item">
+                    <label class="layui-form-label">时长(分)</label>
+                    <div class="layui-input-block">
+                      <input type="number" name="duration" lay-verify="required|number" placeholder="请输入分钟数" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                </div>
+                <div class="layui-col-md4">
+                  <div class="layui-form-item">
+                    <div class="layui-input-block">
+                      <button class="layui-btn" lay-submit lay-filter="task-create-submit">提交</button>
+                      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- 下部：我的任务 -->
+      <div class="layui-col-md12">
+        <div class="layui-card panel-card">
+          <div class="layui-card-header">我的任务</div>
+          <div class="layui-card-body">
+            <table id="LAY-task-list" lay-filter="LAY-task-list"></table>
+            <script type="text/html" id="table-task-control">
+              <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="stop"><i class="layui-icon layui-icon-test"></i>中止</a>
+              <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
+            </script>
+            <script type="text/html" id="statusTpl">
+              {{#  if(d.status === 'pending'){ }}
+                <span class="layui-badge layui-bg-orange">等待中</span>
+              {{#  } else if(d.status === 'running'){ }}
+                <span class="layui-badge layui-bg-blue">执行中</span>
+              {{#  } else if(d.status === 'success'){ }}
+                <span class="layui-badge layui-bg-green">已完成</span>
+              {{#  } else if(d.status === 'failed'){ }}
+                <span class="layui-badge layui-bg-red">任务失败</span>
+              {{#  } else if(d.status === 'stopped'){ }}
+                <span class="layui-badge layui-bg-gray">已中止</span>
+              {{#  } else { }}
+                <span class="layui-badge">{{ d.status }}</span>
+              {{#  } }}
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../res/layui/layui.js"></script>
+  <script>
+  layui.config({
+    base: '../../res/'
+  }).extend({
+    taskadmin: 'modules/taskadmin' // 引入外部 JS 模块
+  }).use(['index', 'taskadmin']); // 使用 taskadmin 模块
+  </script>
+</body>
+</html>

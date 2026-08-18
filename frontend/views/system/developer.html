@@ -1,0 +1,462 @@
+<style>
+  :root {
+    --primary-blue: #1e9fff;
+    --deep-sea: #0f172a;
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    --accent-glow: rgba(30, 159, 255, 0.15);
+  }
+
+  /* 基础容器 */
+  .dev-doc-wrapper {
+    padding: 15px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #334155;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    min-height: calc(100vh - 150px);
+  }
+
+  /* 毛玻璃卡片 */
+  .dev-glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    margin-bottom: 20px;
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  /* 侧边导航布局 */
+  .dev-container {
+    display: flex;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .dev-sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+  }
+
+  .dev-main {
+    flex-grow: 1;
+    min-width: 0;
+  }
+
+  /* 导航项 */
+  .dev-nav-list {
+    padding: 10px;
+  }
+  .dev-nav-item {
+    display: block;
+    padding: 10px 15px;
+    color: #64748b;
+    font-size: 13px;
+    border-radius: 8px;
+    transition: all 0.3s;
+    margin-bottom: 4px;
+    text-decoration: none !important;
+  }
+  .dev-nav-item:hover {
+    background: rgba(30, 159, 255, 0.08);
+    color: var(--primary-blue);
+  }
+  .dev-nav-item.active {
+    background: var(--primary-blue);
+    color: white;
+    box-shadow: 0 4px 12px rgba(30, 159, 255, 0.3);
+  }
+
+  /* 文档内容样式 */
+  .doc-section {
+    padding: 30px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  .doc-section:last-child { border-bottom: none; }
+
+  .doc-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 15px;
+    letter-spacing: -0.02em;
+  }
+  .doc-subtitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 25px 0 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .doc-subtitle::before {
+    content: '';
+    width: 4px;
+    height: 18px;
+    background: var(--primary-blue);
+    border-radius: 2px;
+  }
+
+  .doc-text {
+    font-size: 13px;
+    line-height: 1.8;
+    color: #475569;
+    margin-bottom: 15px;
+  }
+
+  /* 代码块美化 */
+  .code-block-wrapper {
+    position: relative;
+    margin: 15px 0;
+  }
+  .code-header {
+    background: #1e293b;
+    color: #94a3b8;
+    padding: 8px 15px;
+    font-size: 11px;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #334155;
+  }
+  pre.code-content {
+    margin: 0;
+    background: #0f172a !important;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 0 0 8px 8px;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+  .code-keyword { color: #c678dd; }
+  .code-string { color: #98c379; }
+  .code-comment { color: #5c6370; font-style: italic; }
+  .code-function { color: #61afef; }
+
+  /* 表格美化 */
+  .doc-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 15px 0;
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .doc-table th {
+    background: rgba(0,0,0,0.02);
+    padding: 12px 15px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    text-align: left;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  .doc-table td {
+    padding: 12px 15px;
+    font-size: 13px;
+    color: #475569;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  .doc-table tr:last-child td { border-bottom: none; }
+  .doc-table tr:hover td { background: rgba(30, 159, 255, 0.02); }
+
+  /* 徽章与标签 */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-blue { background: rgba(30, 159, 255, 0.1); color: var(--primary-blue); }
+  .badge-green { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+  .badge-red { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+
+  .method-tag {
+    background: var(--deep-sea);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 10px;
+    margin-right: 8px;
+  }
+
+  /* 提示框 */
+  .callout {
+    padding: 15px 20px;
+    border-radius: 8px;
+    background: rgba(30, 159, 255, 0.05);
+    border-left: 4px solid var(--primary-blue);
+    margin: 15px 0;
+    font-size: 13px;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 响应式调整 */
+  @media screen and (max-width: 768px) {
+    .dev-container { flex-direction: column; }
+    .dev-sidebar { width: 100%; position: static; }
+  }
+</style>
+
+<div class="layui-fluid dev-doc-wrapper">
+  <div class="dev-container">
+    <!-- 主体内容 -->
+    <div class="dev-main">
+      <div class="dev-glass-panel">
+        <!-- 基础信息 -->
+        <section id="intro" class="doc-section">
+          <h1 class="doc-title">开发者模式 API 说明文档</h1>
+          <p class="doc-text">欢迎使用 SharkSMS 开放接口。本接口专为第三方开发者设计，支持高度自动化的下单流程与任务控制逻辑。</p>
+          
+          <div class="doc-subtitle">1. 基础信息</div>
+          <div class="doc-text">
+            <p>• <strong>接口域名</strong>: <code style="color: var(--primary-blue)">联系管理员获取</code></p>
+            <p>• <strong>数据格式</strong>: <span class="badge badge-blue">application/json</span></p>
+            <p>• <strong>请求方式</strong>: 统一使用 <span class="badge badge-blue">POST</span></p>
+            <div class="callout">
+              <strong>安全提示：</strong> 所有接口请求必须配置 <strong>IP 白名单</strong> 且通过 <strong>MD5 签名校验</strong> 方可调用。
+            </div>
+          </div>
+        </section>
+
+        <!-- 签名算法 -->
+        <section id="sign" class="doc-section">
+          <div class="doc-subtitle">2. 签名算法 (Signature)</div>
+          <p class="doc-text">为确保数据完整性及请求来源可靠，所有 API 请求必须包含 <code>sign</code> 字段。</p>
+          
+          <div class="doc-text" style="background: rgba(0,0,0,0.02); padding: 15px; border-radius: 8px;">
+            <p><strong>计算步骤：</strong></p>
+            <p>1. <strong>提取参数</strong>：获取除 <code>sign</code> 外的所有 POST 参数。</p>
+            <p>2. <strong>升序排序</strong>：按参数名 ASCII 码升序排列。</p>
+            <p>3. <strong>拼接串流</strong>：格式如 <code>key1=val1&key2=val2...</code>。</p>
+            <p>4. <strong>追加密钥</strong>：在串流末尾直接追加您的 <code class="badge badge-red">api_key</code>。</p>
+            <p>5. <strong>MD5 摘要</strong>：执行 32 位小写 MD5 加密，生成 <code>sign</code>。</p>
+          </div>
+
+          <div class="code-block-wrapper">
+            <div class="code-header">
+              <span>Node.js Implementation Example</span>
+              <span style="cursor: pointer;" onclick="layer.msg('代码已复制')"><i class="layui-icon layui-icon-list"></i></span>
+            </div>
+            <pre class="code-content">
+<span class="code-keyword">const</span> crypto = <span class="code-function">require</span>(<span class="code-string">'crypto'</span>);
+
+<span class="code-keyword">const</span> body = {
+  api_secret: <span class="code-string">"as_xxxxxxxxxxxx"</span>,
+  phone: <span class="code-string">"13800138000"</span>,
+  duration: <span class="code-string">"10"</span>
+};
+<span class="code-keyword">const</span> apiKey = <span class="code-string">"ak_xxxxxxxxxxxx"</span>; <span class="code-comment">// 后台安全中心获取</span>
+
+<span class="code-comment">// 1. 字典序排序并拼接</span>
+<span class="code-keyword">const</span> signStr = Object.<span class="code-function">keys</span>(body).<span class="code-function">sort</span>().<span class="code-function">map</span>(k => <span class="code-string">`${k}=${body[k]}`</span>).<span class="code-function">join</span>(<span class="code-string">'&'</span>) + apiKey;
+
+<span class="code-comment">// 2. MD5 加密 (32位小写)</span>
+<span class="code-keyword">const</span> sign = crypto.<span class="code-function">createHash</span>(<span class="code-string">'md5'</span>).<span class="code-function">update</span>(signStr).<span class="code-function">digest</span>(<span class="code-string">'hex'</span>);
+
+<span class="code-comment">// 3. 最终请求体</span>
+body.sign = sign;</pre>
+          </div>
+        </section>
+
+        <!-- 接口列表 -->
+        <section id="api-create" class="doc-section">
+          <div class="doc-subtitle">3.1 请求下单 (Place Order)</div>
+          <p class="doc-text">发起一个新的短信压力测试或通知任务。</p>
+          <p class="doc-text"><span class="method-tag">POST</span> <code>/api/open/task/create</code></p>
+          
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>参数</th>
+                <th>类型</th>
+                <th>必填</th>
+                <th>说明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>api_secret</code></td>
+                <td>String</td>
+                <td><span class="badge badge-green">YES</span></td>
+                <td>API 通讯密钥</td>
+              </tr>
+              <tr>
+                <td><code>phone</code></td>
+                <td>String</td>
+                <td><span class="badge badge-green">YES</span></td>
+                <td>目标手机号</td>
+              </tr>
+              <tr>
+                <td><code>duration</code></td>
+                <td>String</td>
+                <td><span class="badge badge-green">YES</span></td>
+                <td>任务时长 (分)</td>
+              </tr>
+              <tr>
+                <td><code>sign</code></td>
+                <td>String</td>
+                <td><span class="badge badge-green">YES</span></td>
+                <td>签名</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="code-block-wrapper">
+            <div class="code-header"><span>Success Response</span></div>
+            <pre class="code-content">{
+  <span class="code-string">"code"</span>: 200,
+  <span class="code-string">"msg"</span>: <span class="code-string">"下单成功"</span>,
+  <span class="code-string">"data"</span>: { <span class="code-string">"task_id"</span>: 12345 },
+  <span class="code-string">"timestamp"</span>: <span class="code-string">"2026-08-17 23:50:00"</span>
+}</pre>
+          </div>
+        </section>
+
+        <section id="api-stop" class="doc-section">
+          <div class="doc-subtitle">3.2 请求中止 (Stop Order)</div>
+          <p class="doc-text">即时停止目标任务的运行状态。</p>
+          <p class="doc-text"><span class="method-tag">POST</span> <code>/api/open/task/stop</code></p>
+          
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>参数</th>
+                <th>类型</th>
+                <th>必填</th>
+                <th>说明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>api_secret</code></td>
+                <td>String</td>
+                <td><span class="badge badge-green">YES</span></td>
+                <td>API 通讯密钥</td>
+              </tr>
+              <tr>
+                <td><code>task_id</code></td>
+                <td>Number</td>
+                <td><span class="badge badge-green">YES</span></td>
+                <td>唯一任务 ID</td>
+              </tr>
+              <tr>
+                <td><code>sign</code></td>
+                <td>String</td>
+                <td><span class="badge badge-green">YES</span></td>
+                <td>签名</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="api-info" class="doc-section">
+          <div class="doc-subtitle">3.3 获取用户信息 (Get User Info)</div>
+          <p class="doc-text">获取当前 API 账号的积分余额及基本资料。</p>
+          <p class="doc-text"><span class="method-tag">POST</span> <code>/api/open/user/info</code></p>
+          
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>参数</th>
+                <th>类型</th>
+                <th>必填</th>
+                <th>说明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>api_secret</code></td>
+                <td>String</td>
+                <td><span class="badge badge-green">YES</span></td>
+                <td>API 通讯密钥</td>
+              </tr>
+              <tr>
+                <td><code>sign</code></td>
+                <td>String</td>
+                <td><span class="badge badge-green">YES</span></td>
+                <td>数据摘要签名</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="code-block-wrapper">
+            <div class="code-header"><span>Success Response</span></div>
+            <pre class="code-content">{
+  <span class="code-string">"code"</span>: 200,
+  <span class="code-string">"msg"</span>: <span class="code-string">"获取成功"</span>,
+  <span class="code-string">"data"</span>: {
+    <span class="code-string">"username"</span>: <span class="code-string">"example_user"</span>,
+    <span class="code-string">"points"</span>: 1000,
+    <span class="code-string">"money"</span>: 50.00
+  },
+  <span class="code-string">"timestamp"</span>: <span class="code-string">"2026-08-18 16:00:00"</span>
+}</pre>
+          </div>
+        </section>
+
+        <!-- 错误码 -->
+        <section id="errors" class="doc-section">
+          <div class="doc-subtitle">4. 常见错误码</div>
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th width="80">状态码</th>
+                <th width="150">含义</th>
+                <th>排查方案</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="badge badge-red">400</span></td>
+                <td>参数缺失</td>
+                <td>请核对必填参数项，特别是 sign 字段</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-red">401</span></td>
+                <td>鉴权失败</td>
+                <td>检查 api_key 追加位置或 api_secret 是否正确</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-red">403</span></td>
+                <td>受限操作</td>
+                <td>IP 不在白名单或账号状态异常（封禁）</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-red">500</span></td>
+                <td>业务限制</td>
+                <td>手机号已在任务列表或积分账户余额不足</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+layui.use(['util', 'jquery'], function(){
+  var util = layui.util;
+  var $ = layui.jquery;
+});
+</script>

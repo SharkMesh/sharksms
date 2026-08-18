@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>公告表单</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../../res/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../../res/layui/css/shark.css" media="all">
+  <style>
+    body { padding: 20px; background-color: #fff; }
+    .layui-form-label { font-size: 13px; }
+    .layui-textarea { font-size: 13px; min-height: 200px; }
+  </style>
+</head>
+<body>
+
+  <div class="layui-form" lay-filter="layuiadmin-form-announcement" id="layuiadmin-form-announcement">
+    <div class="layui-form-item">
+      <label class="layui-form-label">公告内容</label>
+      <div class="layui-input-block">
+        <textarea name="content" lay-verify="required" placeholder="请输入公告内容" class="layui-textarea"></textarea>
+      </div>
+    </div>
+    
+    <div class="layui-form-item layui-hide">
+      <input type="button" lay-submit lay-filter="LAY-announcement-submit" id="LAY-announcement-submit" value="确认">
+    </div>
+  </div>
+
+  <script src="../../../res/layui/layui.js"></script>  
+  <script>
+  layui.config({
+    base: '../../../res/' 
+  }).use(['index', 'form'], function(){
+    var $ = layui.$
+    ,form = layui.form;
+  });
+  </script>
+</body>
+</html>

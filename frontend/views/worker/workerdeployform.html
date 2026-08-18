@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>部署配置</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../res/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="../../res/layui/css/shark.css" media="all">
+  <style>
+    .layui-form-label { width: 100px; }
+    .layui-input-block { margin-left: 130px; }
+    /* 统一使用 13px 字号以保持精致感 */
+    .layui-input, .layui-select, .layui-textarea, .layui-form-label {
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="layui-form" lay-filter="LAY-worker-deploy-form" id="LAY-worker-deploy-form" style="padding: 20px 30px 0 0;">
+    <div class="layui-form-item">
+      <label class="layui-form-label">跳过 Redis</label>
+      <div class="layui-input-block">
+        <input type="checkbox" name="skip_redis" lay-skin="switch" lay-text="是|否" value="true">
+        <div class="layui-form-mid layui-word-aux" style="float: none; margin-left: 0;">开启后部署脚本将跳过 Redis 安装</div>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">内存限制</label>
+      <div class="layui-input-block">
+        <input type="text" name="mem_limit" placeholder="请输入" autocomplete="off" class="layui-input">
+        <div class="layui-form-mid layui-word-aux" style="float: none; margin-left: 0;">建议值：总内存-6（如16G内存填10）</div>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">CPU限制</label>
+      <div class="layui-input-block">
+        <input type="text" name="cpu_limit" placeholder="请输入" autocomplete="off" class="layui-input">
+        <div class="layui-form-mid layui-word-aux" style="float: none; margin-left: 0;">建议值：70（上限100）</div>
+      </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+      <input type="button" lay-submit lay-filter="LAY-worker-deploy-submit" id="LAY-worker-deploy-submit" value="确认">
+    </div>
+  </div>
+
+  <script src="../../res/layui/layui.js"></script>  
+  <script>
+  layui.config({
+    base: '../../res/' 
+  }).use(['index', 'form'], function(){
+    var $ = layui.$
+    ,form = layui.form;
+  })
+  </script>
+</body>
+</html>

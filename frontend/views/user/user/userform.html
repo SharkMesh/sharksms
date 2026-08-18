@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>layuiAdmin 网站用户 iframe 框</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../../res/layui/css/layui.css" media="all">
+</head>
+<body>
+
+  <div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 20px 0 0 0;">
+    <div class="layui-form-item" style="padding: 0 20px 10px 20px; color: #ff4757; font-size: 12px;">
+      <i class="layui-icon layui-icon-tips"></i> 提示：新建或重置默认密码为 <b>123456</b>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">用户名</label>
+      <div class="layui-input-inline">
+        <input type="text" name="username" lay-verify="required|username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">角色</label>
+      <div class="layui-input-inline">
+        <select name="role">
+          <option value="User">普通用户</option>
+          <option value="Agent">代理商</option>
+        </select>
+      </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+      <label class="layui-form-label">状态</label>
+      <div class="layui-input-inline">
+        <select name="status">
+          <option value="normal" selected>正常</option>
+          <option value="banned">封禁</option>
+        </select>
+      </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+      <input type="button" lay-submit lay-filter="LAY-user-front-submit" id="LAY-user-front-submit" value="确认">
+    </div>
+  </div>
+
+  <script src="../../../res/layui/layui.js"></script>  
+  <script>
+  layui.config({
+    base: '../../../res/' // 静态资源所在路径
+  }).use(['index', 'form', 'user'], function(){
+    var $ = layui.$
+    ,form = layui.form;
+  })
+  </script>
+</body>
+</html>
