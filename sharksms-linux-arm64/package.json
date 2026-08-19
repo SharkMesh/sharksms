@@ -24,6 +24,8 @@
     "jsonwebtoken": "^9.0.3",
     "morgan": "^1.11.0",
     "mysql2": "^3.23.3",
+    "node-cron": "^4.6.0",
+    "node-machine-id": "^1.1.12",
     "rate-limit-redis": "^6.0.1",
     "svg-captcha": "^1.4.0",
     "winston": "^3.19.0",

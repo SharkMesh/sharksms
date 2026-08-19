@@ -1,6 +1,6 @@
 # sharkSMS 前后端部署教程
 
-## 后端部署说明
+## 后端部署说明 (建议 ubuntu 24.04)
 
 1. **安装宝塔面板**  
    参考宝塔官方安装命令进行安装。
@@ -70,6 +70,9 @@
 
 ## 常见问题说明
 
+**如何找到机器码**
+- 运行一次后端服务，即可在日志中找到机器码 `ID: xxxxxxx`
+
 **域名证书问题**
 - 如前端部署并开启了SSL证书，则需要同步开启后端服务的SSL证书，并在 `frontend/res/config.js` 文件中修改后端接口基础URL为带 `https://` 的基础URL即可，多进程模式可使用反向代理实现
 
@@ -89,6 +92,16 @@
 - **查看开机启动状态**：`systemctl is-enabled sms_agent`
 - **agent端配置文件位置**: `/opt/sms_agent/.env`
 
+### 一键更新 (仅更新二进制文件)
+```bash
+curl -sSL https://raw.githubusercontent.com/SharkMesh/sharksms/master/install.sh | sudo bash -s -- --update
+```
+
+### 一键卸载 Agent
+```bash
+curl -sSL https://raw.githubusercontent.com/SharkMesh/sharksms/master/install.sh | sudo bash -s -- --uninstall
+```
+
 ## agent端参数说明
 | 参数 | 说明 | 示例 |
 | :--- | :--- | :--- |
@@ -104,7 +117,7 @@
 ## 项目更新说明
 
 **更新项目**
-- 直接执行 `git pull` 即可更新项目，更新后需要修改相对目录`frontend/res/config.js`文件中的后端接口基础URL，如果后端 `.env.example` 修改了，则需同步修改.env文件
+- 直接依次执行 `git reset --hard` 和 `git pull` 即可更新项目，更新后需要修改相对目录`frontend/res/config.js`文件中的后端接口基础URL，如果后端 `.env.example` 修改了，则需同步修改.env文件
 
 **更新疑难解答**
-- 如您修改了代码，请先备份，然后执行 `git reset --hard` 即可丢弃本地修改，解决冲突进行更新
+- 如您修改了前端代码，请先备份，然后执行 `git reset --hard` 以解决冲突进行更新
