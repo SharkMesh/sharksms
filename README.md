@@ -32,7 +32,7 @@
      - 如果输出为 `aarch64` 或 `arm64`，请选择 `sharksms-linux-arm64` 目录
 
 5. **修改配置文件并部署后端**  
-   - 切换到对应的目录，例如 `/www/wwwroot/sharksms-linux-x64`，并点击「终端」
+   - 切换到对应的目录，例如 `/www/wwwroot/sharksms/sharksms-linux-x64`，并点击「终端」
    - 在终端中执行以下命令生成配置文件 `.env` ：
      ```bash
      cp .env.example .env
@@ -117,7 +117,7 @@ curl -sSL https://raw.githubusercontent.com/SharkMesh/sharksms/master/install.sh
 ## 项目更新说明
 
 **更新项目**
-- 直接依次执行 `git reset --hard` 和 `git pull` 即可更新项目，更新后需要修改相对目录`frontend/res/config.js`文件中的后端接口基础URL，如果后端 `.env.example` 修改了，则需同步修改.env文件
+- 切换到项目目录 `/www/wwwroot/sharksms/`， 依次执行 `git reset --hard` 和 `git pull` 即可更新项目，更新后需要修改相对目录`frontend/res/config.js`文件中的后端接口基础URL，如果后端 `.env.example` 修改了，则需同步修改.env文件
 
 **更新疑难解答**
 - 如您修改了前端代码，请先备份，然后执行 `git reset --hard` 以解决冲突进行更新
