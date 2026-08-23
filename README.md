@@ -71,6 +71,7 @@
    - 点击确认即可
    - 然后找到 `frontend` 相对目录下的 `frontend/res/config.js` 文件，修改后端接口基础URL，为你的后端接口URL即可 如：`http://你的服务器IP:3000`
    - 至此，sharkSMS 前端部署完成
+   - 前端访问地址为：`http://你的域名或IP/views/user/login.html`
 
 ## 常见问题说明
 
