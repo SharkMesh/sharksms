@@ -89,7 +89,7 @@ esac
 echo -e "${YELLOW}检测到系统架构: $ARCH -> 使用二进制版本: $BINARY_ARCH${NC}"
 
 APP_DIR="/opt/sms_agent"
-REPO="SharkMesh/sharksms"
+REPO="yangnil/sms_agent"
 
 # 4. 处理更新逻辑
 if [ "$UPDATE_ONLY" = true ]; then
@@ -127,16 +127,18 @@ if [ "$SKIP_REDIS" = false ]; then
     if command -v apt-get >/dev/null; then
       apt-get update
       apt-get install -y redis-server
+      REDIS_SERVICE="redis-server"
     elif command -v yum >/dev/null; then
       yum install -y epel-release
       yum install -y redis
+      REDIS_SERVICE="redis"
     else
       echo -e "${RED}不支持的包管理器，请手动安装 Redis${NC}"
       exit 1
     fi
 
-    systemctl enable redis
-    systemctl start redis
+    systemctl enable $REDIS_SERVICE
+    systemctl start $REDIS_SERVICE
     echo -e "${GREEN}Redis 安装并启动成功${NC}"
 else
     echo -e "${YELLOW}跳过 Redis 安装步骤${NC}"
