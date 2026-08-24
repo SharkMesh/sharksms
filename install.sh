@@ -89,7 +89,7 @@ esac
 echo -e "${YELLOW}检测到系统架构: $ARCH -> 使用二进制版本: $BINARY_ARCH${NC}"
 
 APP_DIR="/opt/sms_agent"
-REPO="yangnil/sms_agent"
+REPO="SharkMesh/sharksms"
 
 # 4. 处理更新逻辑
 if [ "$UPDATE_ONLY" = true ]; then
