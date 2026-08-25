@@ -27,7 +27,7 @@
      ```bash
      uname -m
      ```
-   - **选择对应的安装包：**
+   - **选择对应的版本目录：**
      - 如果输出为 `x86_64`，请执行 `cd /www/wwwroot/sharksms/sharksms-linux-x64`
      - 如果输出为 `aarch64` 或 `arm64`，请执行 `cd /www/wwwroot/sharksms/sharksms-linux-arm64`
 
@@ -58,7 +58,7 @@
    - 打开网站设置 「网站」→「PHP项目」，找到刚才添加的网站，点击「设置」
    - 点击「反向代理」→ 「添加反向代理」按照下图配置参数进行配置，并保存
 
-   ** 反向代理配置**
+   **反向代理配置**
    ![反向代理配置截图](img/ScreenShot_2026-08-25_144527_029.png)
 
    - 至此，sharkSMS 前端部署完成
