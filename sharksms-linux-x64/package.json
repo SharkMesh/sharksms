@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node loader.js",
-    "pm2": "pm2 start ecosystem.config.cjs",
-    "initDB": "node init_loader.js"
+    "pm2": "pm2 start ecosystem.config.cjs"
   },
   "keywords": [],
   "author": "",

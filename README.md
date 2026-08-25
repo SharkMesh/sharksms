@@ -28,32 +28,19 @@
      uname -m
      ```
    - **选择对应的安装包：**
-     - 如果输出为 `x86_64`，请选择 `sharksms-linux-x64` 目录
-     - 如果输出为 `aarch64` 或 `arm64`，请选择 `sharksms-linux-arm64` 目录
+     - 如果输出为 `x86_64`，请执行 `cd /www/wwwroot/sharksms/sharksms-linux-x64`
+     - 如果输出为 `aarch64` 或 `arm64`，请执行 `cd /www/wwwroot/sharksms/sharksms-linux-arm64`
 
 5. **修改配置文件并部署后端**  
-   - 切换到对应的目录，例如 `/www/wwwroot/sharksms/sharksms-linux-x64`，并点击「终端」
    - 在终端中执行以下命令生成配置文件 `.env` ：
      ```bash
      cp .env.example .env
      ```
-   - 关闭终端，打开.env文件并修改配置，完成后保存
-   - 再次打开终端，执行以下命令安装依赖：
-     ```bash
-     npm install
-     ```
-   - 或者
-     ```bash
-     pnpm install
-     ```
-   - 执行以下命令初始化数据库：
-     ```bash
-     npm run initDB
-     ```
-   - 看到 `数据库表初始化成功` 后关闭终端
+   - 关闭终端，打开.env文件，并修改配置，完成后保存
    - 在宝塔面板中找到 「网站」，切换分类后 「Node项目」，点击「添加项目」
    - 两种部署方式 `单进程` 和 `PM2多进程` 任选一种即可 (推荐 `PM2多进程`)
-   **单进程**  
+
+   **单进程**
    ![单进程部署截图](img/ScreenShot_2026-08-18_161839_275.png)  
    **PM2多进程**  
    ![PM2多进程部署截图](img/ScreenShot_2026-08-18_161930_666.png)
@@ -67,19 +54,19 @@
 1. **添加网站**  
    - 在宝塔面板中，依次点击「网站」→「PHP项目」→「添加站点」
    - 填写域名
-   - 选择根目录，刚才拉取的项目目录中的 `frontend` 目录作为根目录
-   - 点击确认即可
-   - 然后找到 `frontend` 相对目录下的 `frontend/res/config.js` 文件，修改后端接口基础URL，为你的后端接口URL即可 如：`http://你的服务器IP:3000`
+   - 选择根目录，刚才拉取的项目目录中的 `frontend` 目录作为根目录，点击确认
+   - 打开网站设置 「网站」→「PHP项目」，找到刚才添加的网站，点击「设置」
+   - 点击「反向代理」→ 「添加反向代理」按照下图配置参数进行配置，并保存
+
+   ** 反向代理配置**
+   ![反向代理配置截图](img/ScreenShot_2026-08-25_144527_029.png)
+
    - 至此，sharkSMS 前端部署完成
-   - 前端访问地址为：`http://你的域名或IP/views/user/login.html`
 
 ## 常见问题说明
 
 **如何找到机器码**
 - 运行一次后端服务，即可在日志中找到机器码 `ID: xxxxxxx`
-
-**域名证书问题**
-- 如前端部署并开启了SSL证书，则需要同步开启后端服务的SSL证书，并在 `frontend/res/config.js` 文件中修改后端接口基础URL为带 `https://` 的基础URL即可，多进程模式可使用反向代理实现
 
 **agent端连接问题**
 - 如agent端连接失败，则需要检查后端服务器的mysql服务 `3306` 端口是否放行，后端数据库是否开启 agent端IP 访问权限
@@ -122,7 +109,26 @@ curl -sSL https://raw.githubusercontent.com/SharkMesh/sharksms/master/install.sh
 ## 项目更新说明
 
 **更新项目**
-- 切换到项目目录 `/www/wwwroot/sharksms/`， 依次执行 `git reset --hard` 和 `git pull` 即可更新项目，更新后需要修改相对目录`frontend/res/config.js`文件中的后端接口基础URL，如果后端 `.env.example` 修改了，则需同步修改.env文件
+- 切换到项目目录 `/www/wwwroot/sharksms/`， 依次执行 `git reset --hard` 和 `git pull` 即可更新项目，如果后端 `.env.example` 修改了，则需同步修改.env文件
 
 **更新疑难解答**
 - 如您修改了前端代码，请先备份，然后执行 `git reset --hard` 以解决冲突进行更新
+
+## 更新补丁 v1.0.3升级v1.0.5
+
+```sql
+-- 为卡密表增加字段
+ALTER TABLE `ms_vouchers` 
+ADD COLUMN `display_duration` int DEFAULT 600 COMMENT '最大分钟数' 
+AFTER `concurrent_tasks`;
+
+-- 为用户表增加字段
+ALTER TABLE `ms_users` 
+ADD COLUMN `display_duration` int DEFAULT 0 COMMENT '最大分钟数' 
+AFTER `max_concurrent_tasks`;
+
+-- 为套餐表增加字段
+ALTER TABLE `ms_packages` 
+ADD COLUMN `display_duration` int NOT NULL DEFAULT 600 COMMENT '最大分钟数' 
+AFTER `concurrent_tasks`;
+```

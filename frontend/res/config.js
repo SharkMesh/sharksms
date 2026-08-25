@@ -10,7 +10,7 @@ layui.define(['all'], function (exports) {
       views: layui.cache.base + 'views/', // 动态模板所在目录
       modules: layui.cache.base + 'modules/', // 业务模块所在目录
       base: layui.cache.base, // 记录静态资源所在基础目录
-      baseApi: 'http://127.0.0.1:3000' // 后端接口基础URL
+      baseApi: '/api'
     },
 
     container: 'LAY_app', // 容器 ID
