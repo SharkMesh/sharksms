@@ -19,30 +19,32 @@
           <div class="layui-card-header">提交任务</div>
           <div class="layui-card-body">
             <form class="layui-form" action="" lay-filter="task-create-form">
-              <div class="layui-row layui-col-space10">
-                <div class="layui-col-md4">
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">手机号</label>
-                    <div class="layui-input-block">
-                      <input type="text" name="phone" lay-verify="required|phone" placeholder="请输入手机号" autocomplete="off" class="layui-input">
-                    </div>
+              <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">手机号</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="phone" lay-verify="required|phone" placeholder="请输入手机号" autocomplete="off" class="layui-input">
                   </div>
                 </div>
-                <div class="layui-col-md4">
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">时长(分)</label>
-                    <div class="layui-input-block">
-                      <input type="number" name="duration" lay-verify="required|number" placeholder="请输入分钟数" autocomplete="off" class="layui-input">
-                    </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">时长(分)</label>
+                  <div class="layui-input-inline" style="width: 100px;">
+                    <input type="number" name="duration" id="duration_input" lay-verify="required|number" placeholder="请输入" autocomplete="off" class="layui-input">
+                  </div>
+                  <div class="layui-input-inline" style="width: 120px;">
+                    <select lay-filter="duration_select" id="duration_select">
+                      <option value="">快捷选择</option>
+                      <option value="10">10分钟</option>
+                      <option value="20">20分钟</option>
+                      <option value="100">100分钟</option>
+                      <option value="300">300分钟</option>
+                      <option value="600">600分钟</option>
+                    </select>
                   </div>
                 </div>
-                <div class="layui-col-md4">
-                  <div class="layui-form-item">
-                    <div class="layui-input-block">
-                      <button class="layui-btn" lay-submit lay-filter="task-create-submit">提交</button>
-                      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                    </div>
-                  </div>
+                <div class="layui-inline">
+                  <button class="layui-btn" lay-submit lay-filter="task-create-submit">提交</button>
+                  <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
               </div>
             </form>
@@ -53,6 +55,25 @@
       <!-- 下部：我的任务 -->
       <div class="layui-col-md12">
         <div class="layui-card panel-card">
+          <script type="text/html" template>
+            {{# if(layui.data(layui.setter.tableName).user.role === 'Admin'){ }}
+            <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+              <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">用户名</label>
+                  <div class="layui-input-block">
+                    <input type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <button class="layui-btn layuiadmin-btn-tasksearch" lay-submit lay-filter="LAY-task-search">
+                    <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i> 搜索
+                  </button>
+                </div>
+              </div>
+            </div>
+            {{# } }}
+          </script>
           <div class="layui-card-header">我的任务</div>
           <div class="layui-card-body">
             <table id="LAY-task-list" lay-filter="LAY-task-list"></table>
@@ -86,7 +107,7 @@
   layui.config({
     base: '../../res/'
   }).extend({
-    taskadmin: 'modules/taskadmin' // 引入外部 JS 模块
+    taskadmin: 'modules_backup/taskadmin' // 引入外部 JS 模块
   }).use(['index', 'taskadmin']); // 使用 taskadmin 模块
   </script>
 </body>

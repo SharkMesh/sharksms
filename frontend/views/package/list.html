@@ -79,6 +79,12 @@
                       <span class="value">{{ item.points }} 积分</span>
                     </div>
                     {{# } }}
+                    {{# if(item.category === 'combo' || item.category === 'tasks' || item.category === 'level'){ }}
+                    <div class="info-item">
+                      <span class="label">执行上限</span>
+                      <span class="value">{{ item.display_duration || 0 }} 分钟</span>
+                    </div>
+                    {{# } }}
                     {{# if(item.category === 'level' && item.target_role){ }}
                     <div class="info-item">
                       <span class="label">目标等级</span>

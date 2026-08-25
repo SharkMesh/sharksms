@@ -64,6 +64,7 @@
         ,{field: 'points', title: '积分', width: 100, event: 'edit_points', style: 'cursor: pointer;', templet: function(d){ return Math.floor(d.points || 0); }}
         ,{field: 'money', title: '余额', width: 100, event: 'edit_money', style: 'cursor: pointer;', templet: function(d){ return parseFloat(d.money || 0).toFixed(2); }}
         ,{field: 'max_concurrent_tasks', title: '并发数', width: 100, event: 'edit_concurrency', style: 'cursor: pointer;', templet: function(d){ return d.max_concurrent_tasks === -1 ? '无限制' : d.max_concurrent_tasks; }}
+        ,{field: 'display_duration', title: '执行上限', width: 100, event: 'edit_duration', style: 'cursor: pointer;', templet: function(d){ return d.display_duration || 0; }}
         ,{field: 'status', title: '状态', width: 100, templet: function(d){
           var isChecked = d.status === 'normal' ? 'checked' : '';
           return '<input type="checkbox" name="status" value="'+ d.id +'" lay-skin="switch" lay-text="正常|封禁" lay-filter="user-status-switch" '+ isChecked +'>';
@@ -163,7 +164,30 @@
             }
           });
         });
+      } else if(obj.event === 'edit_duration'){
+        layer.prompt({
+          formType: 0,
+          value: data.display_duration || 0,
+          title: '修改下级用户 ['+ data.username +'] 的执行上限（分钟）'
+        }, function(value, index){
+          admin.req({
+            url: layui.setter.paths.baseApi + '/api/admin/users/' + data.id + '/display-duration'
+            ,method: 'POST'
+            ,data: { display_duration: value }
+            ,done: function(res){
+              layer.close(index);
+              obj.update({ display_duration: value });
+              layer.msg('执行上限修改成功', {icon: 1});
+            }
+          });
+        });
       }
+    });
+
+    // 监听行双击事件
+    table.on('rowDouble(LAY-user-sub-manage)', function (obj) {
+      // 双击行时触发执行上限的编辑
+      $(obj.tr).find('td[data-field="display_duration"]').click();
     });
 
     // 监听状态开关

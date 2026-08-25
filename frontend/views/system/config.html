@@ -57,14 +57,14 @@
                 <div class="layui-input-inline" style="width: 150px;">
                   <input type="number" name="free_mode_default_minutes" lay-verify="required|number" step="1" class="layui-input">
                 </div>
-                <div class="layui-form-mid layui-word-aux">免费模式下用户默认提单的分钟数</div>
+                <div class="layui-form-mid layui-word-aux">免费模式下用户默认提单的分钟数(实际时长 = (用户选择时长 / 系统配置显示时长) * 系统配置默认时长)</div>
               </div>
               <div class="layui-form-item">
                 <label class="layui-form-label">免费模式展示分钟数</label>
                 <div class="layui-input-inline" style="width: 150px;">
                   <input type="number" name="free_mode_display_minutes" lay-verify="required|number" step="1" class="layui-input">
                 </div>
-                <div class="layui-form-mid layui-word-aux">前端展示的免费模式分钟数</div>
+                <div class="layui-form-mid layui-word-aux">免费模式下前端展示的分钟数(建议填写最大档位的时长)</div>
               </div>
               <div class="layui-form-item">
                 <label class="layui-form-label">机器人Token</label>

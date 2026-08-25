@@ -50,6 +50,12 @@
       </div>
     </div>
     <div class="layui-form-item">
+      <label class="layui-form-label">执行上限(分)</label>
+      <div class="layui-input-inline">
+        <input type="number" name="display_duration" lay-verify="required" placeholder="请输入分钟数" autocomplete="off" class="layui-input" value="0">
+      </div>
+    </div>
+    <div class="layui-form-item">
       <label class="layui-form-label">用户等级</label>
       <div class="layui-input-inline">
         <select name="target_role">
@@ -83,23 +89,29 @@
       var $tasks = $('input[name="concurrent_tasks"]');
       var $points = $('input[name="points"]');
       var $role = $('select[name="target_role"]');
+      var $duration = $('input[name="display_duration"]');
 
       // 重置状态
       $tasks.prop('disabled', false).removeClass('layui-disabled');
       $points.prop('disabled', false).removeClass('layui-disabled');
       $role.prop('disabled', false).removeClass('layui-disabled');
+      $duration.prop('disabled', false).removeClass('layui-disabled');
 
       if (category === 'points') {
         $tasks.prop('disabled', true).addClass('layui-disabled').val(1);
         $role.prop('disabled', true).addClass('layui-disabled').val('');
+        $duration.prop('disabled', true).addClass('layui-disabled').val(0);
       } else if (category === 'tasks') {
         $points.prop('disabled', true).addClass('layui-disabled').val(0);
         $role.prop('disabled', true).addClass('layui-disabled').val('');
+        $duration.prop('disabled', false).removeClass('layui-disabled');
       } else if (category === 'level') {
         $points.prop('disabled', true).addClass('layui-disabled').val(0);
         $tasks.prop('disabled', false).removeClass('layui-disabled');
+        $duration.prop('disabled', false).removeClass('layui-disabled');
       } else if (category === 'combo') {
         $role.prop('disabled', true).addClass('layui-disabled').val('');
+        $duration.prop('disabled', false).removeClass('layui-disabled');
       }
       form.render();
     });
