@@ -64,6 +64,8 @@
   <script>
   layui.config({
     base: '../../res/' // 静态资源所在路径
+  }).extend({
+    user: 'modules/user' // 重定向 user 模块至定制目录
   }).use(['index', 'user'], function(){
     var $ = layui.$
     ,form = layui.form;

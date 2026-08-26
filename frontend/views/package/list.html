@@ -61,34 +61,38 @@
                       <span class="label">类型</span>
                       <span class="value">
                         {{# if(item.category === 'combo'){ }} 综合包
-                        {{# } else if(item.category === 'points'){ }} 积分包
-                        {{# } else if(item.category === 'tasks'){ }} 线程包
-                        {{# } else if(item.category === 'level'){ }} 等级包
+                        {{# } else if(item.category === 'level'){ }} 升级包
                         {{# } else { }} {{ item.category }} {{# } }}
                       </span>
                     </div>
-                    {{# if(item.category === 'combo' || item.category === 'tasks' || item.category === 'level'){ }}
+                    {{# if(item.concurrent_tasks > 0){ }}
                     <div class="info-item">
                       <span class="label">并发数</span>
                       <span class="value">{{ item.concurrent_tasks }} 线程</span>
                     </div>
                     {{# } }}
-                    {{# if(item.category === 'combo' || item.category === 'points'){ }}
+                    {{# if(item.points > 0){ }}
                     <div class="info-item">
                       <span class="label">包含积分</span>
                       <span class="value">{{ item.points }} 积分</span>
                     </div>
                     {{# } }}
-                    {{# if(item.category === 'combo' || item.category === 'tasks' || item.category === 'level'){ }}
+                    {{# if(item.display_duration > 0){ }}
                     <div class="info-item">
                       <span class="label">执行上限</span>
-                      <span class="value">{{ item.display_duration || 0 }} 分钟</span>
+                      <span class="value">{{ item.display_duration }} 分钟</span>
                     </div>
                     {{# } }}
-                    {{# if(item.category === 'level' && item.target_role){ }}
+                    {{# if(item.daily_order_limit > 0){ }}
+                    <div class="info-item">
+                      <span class="label">日提单数</span>
+                      <span class="value">{{ item.daily_order_limit }} 单</span>
+                    </div>
+                    {{# } }}
+                    {{# if(item.target_role){ }}
                     <div class="info-item">
                       <span class="label">目标等级</span>
-                      <span class="value" style="color: #FF5722;">{{ item.target_role === 'Agent' ? '代理商' : item.target_role }}</span>
+                      <span class="value" style="color: #FF5722;">{{ item.target_role === 'Agent' ? '代理商' : (item.target_role === 'Member' ? '会员用户' : item.target_role) }}</span>
                     </div>
                     {{# } }}
                     <div class="info-item">
@@ -100,7 +104,7 @@
                     <span style="color: #999; font-size: 12px;">代理价</span>
                     <div>
                       <span class="price-value">{{ item.agent_price }}</span>
-                      <span class="price-unit">积分</span>
+                      <span class="price-unit">元</span>
                     </div>
                   </div>
                   <div class="pkg-actions">
@@ -120,6 +124,8 @@
   <script>
   layui.config({
     base: '../../../res/' // 静态资源所在路径
+  }).extend({
+    packageadmin: 'modules/packageadmin'
   }).use(['index', 'packageadmin'], function(){
     var $ = layui.$
     ,form = layui.form

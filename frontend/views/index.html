@@ -134,6 +134,9 @@
   <script>
   layui.config({
     base: '../res/' // 静态资源所在路径
+  }).extend({
+    user: 'modules/user', // 定制用户模块
+    common: 'modules/common' // 定制公共模块
   }).use(['index']);
   </script>
 </body>

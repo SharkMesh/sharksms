@@ -135,7 +135,7 @@
     var user = layui.data(layui.setter.tableName).user || {};
     $('#user-points').text(parseInt(user.points) || '0');
     $('#user-money').text(user.money || '0.00');
-    var roleText = user.role === 'Admin' ? '管理员' : (user.role === 'Agent' ? '代理商' : '普通用户');
+    var roleText = user.role === 'Admin' ? '管理员' : (user.role === 'Agent' ? '代理商' : (user.role === 'Member' ? '会员用户' : '普通用户'));
     $('#user-role').text(roleText);
     $('#role-name').text(user.role === 'Admin' ? '超级管理员' : roleText);
     
@@ -197,6 +197,42 @@
           $list.empty();
           
           if(data.length > 0) {
+            // 检查是否需要显示登录后的公告弹窗
+            var local = layui.data(layui.setter.tableName);
+            if(local.showAnnouncement){
+              // 显示弹窗
+              layer.open({
+                type: 1,
+                title: '系统公告',
+                area: ['500px', 'auto'],
+                id: 'LAY_adminAnnouncement',
+                shade: 0.3,
+                anim: 0, // 使用 Layui 默认动画
+                content: '<div style="padding: 24px; line-height: 1.6; color: #334155;">' + 
+                  '<div style="font-size: 16px; font-weight: 600; color: #1e293b; margin-bottom: 16px; display: flex; align-items: center;">' + 
+                    '<i class="layui-icon layui-icon-notice" style="font-size: 20px; color: #3b82f6; margin-right: 8px;"></i>' + 
+                    '最新系统公告' + 
+                  '</div>' +
+                  '<div style="font-size: 12px; color: #94a3b8; margin-bottom: 12px;">发布时间：' + util.toDateString(data[0].created_at, 'yyyy-MM-dd HH:mm') + '</div>' +
+                  '<div style="font-size: 14px; background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #f1f5f9;">' + data[0].content + '</div>' + 
+                  '<div style="margin-top: 24px; text-align: right;">' + 
+                    '<button class="layui-btn layui-btn-normal">我知道了</button>' + 
+                  '</div>' +
+                '</div>',
+                success: function(layero, index){
+                  // 清除标记，防止刷新再次弹出
+                  layui.data(layui.setter.tableName, {
+                    key: 'showAnnouncement',
+                    remove: true
+                  });
+                  // 绑定关闭按钮
+                  layero.find('.layui-btn-normal').on('click', function(){
+                    layer.close(index);
+                  });
+                }
+              });
+            }
+
             layui.each(data.slice(0, 5), function(index, item){
               var $li = $('<li>' + 
                 '<span class="layui-badge-dot layui-bg-blue"></span>' + 

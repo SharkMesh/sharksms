@@ -65,6 +65,7 @@
         ,{field: 'money', title: '余额', width: 100, event: 'edit_money', style: 'cursor: pointer;', templet: function(d){ return parseFloat(d.money || 0).toFixed(2); }}
         ,{field: 'max_concurrent_tasks', title: '并发数', width: 100, event: 'edit_concurrency', style: 'cursor: pointer;', templet: function(d){ return d.max_concurrent_tasks === -1 ? '无限制' : d.max_concurrent_tasks; }}
         ,{field: 'display_duration', title: '执行上限', width: 100, event: 'edit_duration', style: 'cursor: pointer;', templet: function(d){ return d.display_duration || 0; }}
+        ,{field: 'daily_order_limit', title: '日提单数', width: 100, event: 'edit_daily_limit', style: 'cursor: pointer;', templet: function(d){ return d.daily_order_limit || 0; }}
         ,{field: 'status', title: '状态', width: 100, templet: function(d){
           var isChecked = d.status === 'normal' ? 'checked' : '';
           return '<input type="checkbox" name="status" value="'+ d.id +'" lay-skin="switch" lay-text="正常|封禁" lay-filter="user-status-switch" '+ isChecked +'>';
@@ -178,6 +179,23 @@
               layer.close(index);
               obj.update({ display_duration: value });
               layer.msg('执行上限修改成功', {icon: 1});
+            }
+          });
+        });
+      } else if(obj.event === 'edit_daily_limit'){
+        layer.prompt({
+          formType: 0,
+          value: data.daily_order_limit || 0,
+          title: '修改下级用户 ['+ data.username +'] 的日提单数'
+        }, function(value, index){
+          admin.req({
+            url: layui.setter.paths.baseApi + '/api/admin/users/' + data.id + '/daily-order-limit'
+            ,method: 'POST'
+            ,data: { daily_order_limit: value }
+            ,done: function(res){
+              layer.close(index);
+              obj.update({ daily_order_limit: value });
+              layer.msg('日提单数修改成功', {icon: 1});
             }
           });
         });

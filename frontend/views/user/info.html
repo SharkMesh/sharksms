@@ -45,10 +45,16 @@
                 <span class="profile-item-content" id="info-created_at">-</span>
               </div>
               <div class="profile-item-row">
-                <span class="profile-item-label"><i class="layui-icon layui-icon-link"></i>Telegram</span>
-                <span class="profile-item-content" id="info-tg_status">
-                  <span class="layui-badge layui-bg-gray">未绑定</span>
-                </span>
+                <span class="profile-item-label"><i class="layui-icon layui-icon-time"></i>到期时间</span>
+                <span class="profile-item-content" id="info-expiry_time">-</span>
+              </div>
+              <div class="profile-item-row">
+                <span class="profile-item-label"><i class="layui-icon layui-icon-fire"></i>并发任务数</span>
+                <span class="profile-item-content" id="info-max_concurrent_tasks">-</span>
+              </div>
+              <div class="profile-item-row">
+                <span class="profile-item-label"><i class="layui-icon layui-icon-list"></i>日提单限制</span>
+                <span class="profile-item-content" id="info-daily_order_limit">-</span>
               </div>
             </div>
           </div>
@@ -194,6 +200,8 @@
   <script>
   layui.config({
     base: '../../res/' 
+  }).extend({
+    userinfo: 'modules/userinfo'
   }).use(['index', 'userinfo']);
   </script>
 </body>

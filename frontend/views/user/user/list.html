@@ -28,6 +28,7 @@
               <select name="role">
                 <option value="">不限</option>
                 <option value="User">普通用户</option>
+                <option value="Member">会员用户</option>
                 <option value="Agent">代理商</option>
               </select>
             </div>
@@ -74,6 +75,8 @@
   <script>
   layui.config({
     base: '../../../res/' // 静态资源所在路径
+  }).extend({
+    useradmin: 'modules/useradmin'
   }).use(['index', 'useradmin', 'table'], function(){
     var $ = layui.$
     ,form = layui.form

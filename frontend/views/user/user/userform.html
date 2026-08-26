@@ -23,10 +23,17 @@
     <div class="layui-form-item">
       <label class="layui-form-label">角色</label>
       <div class="layui-input-inline">
-        <select name="role">
+        <select name="role" lay-filter="role-select">
           <option value="User">普通用户</option>
           <option value="Agent">代理商</option>
+          <option value="Member">会员用户</option>
         </select>
+      </div>
+    </div>
+    <div class="layui-form-item" id="expired-time-item" style="display: none;">
+      <label class="layui-form-label">到期时间</label>
+      <div class="layui-input-inline">
+        <input type="text" name="expiry_time" id="expired_at_input" placeholder="请选择到期时间" autocomplete="off" class="layui-input">
       </div>
     </div>
     <div class="layui-form-item layui-hide">
@@ -47,9 +54,26 @@
   <script>
   layui.config({
     base: '../../../res/' // 静态资源所在路径
-  }).use(['index', 'form', 'user'], function(){
+  }).use(['index', 'form', 'laydate'], function(){
     var $ = layui.$
-    ,form = layui.form;
+    ,form = layui.form
+    ,laydate = layui.laydate;
+
+    // 初始化日期选择器
+     laydate.render({
+       elem: '#expired_at_input',
+       type: 'date',
+       trigger: 'click'
+     });
+
+    // 监听角色切换
+    form.on('select(role-select)', function(data){
+      if(data.value === 'Member'){
+        $('#expired-time-item').show();
+      } else {
+        $('#expired-time-item').hide();
+      }
+    });
   })
   </script>
 </body>

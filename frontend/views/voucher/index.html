@@ -87,6 +87,33 @@
           <div class="layui-card panel-card">
             <div class="layui-card-header">卡密记录</div>
             <div class="layui-card-body">
+              <div class="layui-form layuiadmin-card-header-auto" style="padding-bottom: 15px;">
+                <div class="layui-form-item">
+                  <div class="layui-inline">
+                    <label class="layui-form-label">卡密串</label>
+                    <div class="layui-input-block">
+                      <input type="text" name="code" placeholder="请输入卡密串" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                  <div class="layui-inline">
+                    <label class="layui-form-label">生成者</label>
+                    <div class="layui-input-block">
+                      <input type="text" name="creatorName" placeholder="请输入生成者" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                  <div class="layui-inline">
+                    <label class="layui-form-label">使用者</label>
+                    <div class="layui-input-block">
+                      <input type="text" name="userName" placeholder="请输入使用者" autocomplete="off" class="layui-input">
+                    </div>
+                  </div>
+                  <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="LAY-voucher-search">
+                      <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i> 搜索
+                    </button>
+                  </div>
+                </div>
+              </div>
               <table id="LAY-voucher-list" lay-filter="LAY-voucher-list"></table>
             </div>
           </div>
