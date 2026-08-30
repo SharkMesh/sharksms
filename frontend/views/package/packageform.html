@@ -30,8 +30,9 @@
       <label class="layui-form-label">套餐分类</label>
       <div class="layui-input-inline">
         <select name="category" lay-verify="required" lay-filter="categorySelect">
-          <option value="combo" selected>综合包</option>
-          <option value="level">升级包</option>
+          <option value="points" selected>积分卡</option>
+          <option value="thread">线程卡</option>
+          <option value="upgrade">升级卡</option>
         </select>
       </div>
     </div>
@@ -45,6 +46,12 @@
       <label class="layui-form-label">包含积分</label>
       <div class="layui-input-inline">
         <input type="number" name="points" lay-verify="required" placeholder="请输入积分数量" autocomplete="off" class="layui-input" value="0">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">包含余额</label>
+      <div class="layui-input-inline">
+        <input type="number" name="balance" lay-verify="required" placeholder="请输入包含余额" autocomplete="off" class="layui-input" value="0">
       </div>
     </div>
     <div class="layui-form-item">
@@ -64,7 +71,6 @@
       <div class="layui-input-inline">
         <select name="target_role">
           <option value="">保持原样</option>
-          <option value="Member">会员用户</option>
           <option value="Agent">升级为代理商</option>
         </select>
       </div>
@@ -88,15 +94,40 @@
     var $ = layui.$
     ,form = layui.form;
 
-    // 综合包默认用户等级为Member 会员用户 不可更改
+    // 根据套餐分类调整字段状态
     function checkCategory(category) {
       var $role = $('select[name="target_role"]');
-      if (category === 'combo') {
-        $role.val('Member').prop('disabled', true);
-      } else {
-        $role.prop('disabled', false);
+      var $concurrent = $('input[name="concurrent_tasks"]');
+      var $points = $('input[name="points"]');
+      var $duration = $('input[name="display_duration"]');
+      var $dailyLimit = $('input[name="daily_order_limit"]');
+      var $balance = $('input[name="balance"]');
+
+      // 重置所有禁用状态
+      $role.prop('disabled', false);
+      $concurrent.prop('disabled', false);
+      $points.prop('disabled', false);
+      $duration.prop('disabled', false);
+      $dailyLimit.prop('disabled', false);
+      $balance.prop('disabled', false);
+
+      if (category === 'points') {
+        // 积分卡：强制线程数、日提单数和执行分钟数为 -1
+        $concurrent.val(-1).prop('disabled', true);
+        $dailyLimit.val(-1).prop('disabled', true);
+        $duration.val(-1).prop('disabled', true);
+        $role.val('').prop('disabled', true);
+        $balance.val(0).prop('disabled', true);
+      } else if (category === 'thread') {
+        // 线程卡：强制积分数为 0
+        $points.val(0).prop('disabled', true);
+        $role.val('').prop('disabled', true);
+        $balance.val(0).prop('disabled', true);
+      } else if (category === 'upgrade') {
+        // 升级卡：允许包含所有属性
       }
-      form.render('select');
+
+      form.render();
     }
 
     // 初始化检查

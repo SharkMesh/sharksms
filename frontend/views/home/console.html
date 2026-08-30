@@ -135,7 +135,7 @@
     var user = layui.data(layui.setter.tableName).user || {};
     $('#user-points').text(parseInt(user.points) || '0');
     $('#user-money').text(user.money || '0.00');
-    var roleText = user.role === 'Admin' ? '管理员' : (user.role === 'Agent' ? '代理商' : (user.role === 'Member' ? '会员用户' : '普通用户'));
+    var roleText = user.role === 'Admin' ? '管理员' : (user.role === 'Agent' ? '代理商' : (user.role === 'Member' ? '用户' : '用户'));
     $('#user-role').text(roleText);
     $('#role-name').text(user.role === 'Admin' ? '超级管理员' : roleText);
     

@@ -60,35 +60,36 @@
                     <div class="info-item">
                       <span class="label">类型</span>
                       <span class="value">
-                        {{# if(item.category === 'combo'){ }} 综合包
-                        {{# } else if(item.category === 'level'){ }} 升级包
+                        {{# if(item.category === 'points'){ }} 积分卡
+                        {{# } else if(item.category === 'thread'){ }} 线程卡
+                        {{# } else if(item.category === 'upgrade'){ }} 升级卡
                         {{# } else { }} {{ item.category }} {{# } }}
                       </span>
                     </div>
-                    {{# if(item.concurrent_tasks > 0){ }}
                     <div class="info-item">
                       <span class="label">并发数</span>
-                      <span class="value">{{ item.concurrent_tasks }} 线程</span>
+                      <span class="value">{{ item.concurrent_tasks === -1 ? '不限制' : item.concurrent_tasks + ' 线程' }}</span>
                     </div>
-                    {{# } }}
                     {{# if(item.points > 0){ }}
                     <div class="info-item">
                       <span class="label">包含积分</span>
                       <span class="value">{{ item.points }} 积分</span>
                     </div>
                     {{# } }}
-                    {{# if(item.display_duration > 0){ }}
+                    {{# if(item.balance > 0){ }}
+                    <div class="info-item">
+                      <span class="label">包含余额</span>
+                      <span class="value">{{ item.balance }} 元</span>
+                    </div>
+                    {{# } }}
                     <div class="info-item">
                       <span class="label">执行上限</span>
-                      <span class="value">{{ item.display_duration }} 分钟</span>
+                      <span class="value">{{ item.display_duration === -1 ? '不限制' : item.display_duration + ' 分钟' }}</span>
                     </div>
-                    {{# } }}
-                    {{# if(item.daily_order_limit > 0){ }}
                     <div class="info-item">
                       <span class="label">日提单数</span>
-                      <span class="value">{{ item.daily_order_limit }} 单</span>
+                      <span class="value">{{ item.daily_order_limit === -1 ? '不限制' : item.daily_order_limit + ' 单' }}</span>
                     </div>
-                    {{# } }}
                     {{# if(item.target_role){ }}
                     <div class="info-item">
                       <span class="label">目标等级</span>

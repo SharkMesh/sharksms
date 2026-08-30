@@ -24,9 +24,9 @@
       <label class="layui-form-label">角色</label>
       <div class="layui-input-inline">
         <select name="role" lay-filter="role-select">
-          <option value="User">普通用户</option>
+          <option value="User">线程用户</option>
+          <option value="Member">积分用户</option>
           <option value="Agent">代理商</option>
-          <option value="Member">会员用户</option>
         </select>
       </div>
     </div>
@@ -68,12 +68,18 @@
 
     // 监听角色切换
     form.on('select(role-select)', function(data){
-      if(data.value === 'Member'){
+      if(data.value === 'Member' || data.value === 'User'){
         $('#expired-time-item').show();
       } else {
         $('#expired-time-item').hide();
       }
     });
+
+    // 初始化检查
+    var initialRole = $('select[name="role"]').val();
+    if(initialRole === 'Member' || initialRole === 'User'){
+      $('#expired-time-item').show();
+    }
   })
   </script>
 </body>
